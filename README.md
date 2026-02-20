@@ -1,4 +1,4 @@
-# Xai — Intelligence Workspace
+# Xai — Insight Studio
 
 A high-fidelity intelligence platform prototype built with **Next.js 15**, **Three.js**, and **GSAP**. This project demonstrates the transformation of raw data into structured intelligence through immersive motion design and performance-optimized 3D interactions.
 
@@ -44,7 +44,7 @@ The **Dashboard** demonstrates "Product Thinking" by moving beyond static mockup
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/yourusername/xai-workspace.git](https://github.com/yourusername/xai-workspace.git)
+    git clone [https://github.com/Sifat-Ikram/xai-insight-studio.git](https://github.com/Sifat-Ikram/xai-insight-studio.git)
     ```
 2.  **Install dependencies:**
     ```bash
