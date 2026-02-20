@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Xai — Intelligence Workspace
 
-## Getting Started
+A high-fidelity intelligence platform prototype built with **Next.js 15**, **Three.js**, and **GSAP**. This project demonstrates the transformation of raw data into structured intelligence through immersive motion design and performance-optimized 3D interactions.
 
-First, run the development server:
+**[Live Demo on Vercel](https://xai-insight-studio.vercel.app/)**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Technical Highlights
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### 1. Performance-Optimized 3D Morphing
+The **Hero Section** features a custom Three.js `Points` system visualizing data entropy becoming order.
+* **The Logic:** Implemented a spherical-to-grid lerp (Linear Interpolation) driven by **GSAP ScrollTrigger**.
+* **Optimization:** Used `AdditiveBlending` and `depthWrite={false}` to maintain 60fps while achieving a "glowing" data aesthetic.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 2. Immersive Narrative Scrolling
+The **InsightFlow** section utilizes a "Sticky Pinning" strategy.
+* Instead of standard vertical scrolling, the UI pins the section, allowing the user to "walk through" the Ingest, Analyze, and Generate stages via opacity and Y-axis translations.
+* This ensures the narrative of the product is front-and-center, mimicking the design language of high-end SaaS products like **Stripe** or **Linear**.
 
-## Learn More
+### 3. Engineering Discipline: Instanced Rendering
+In the **Signature Interaction**, I replaced standard React-Three-Fiber meshes with an `instancedMesh` system.
+* **The Result:** Rendered 400+ complex dodecahedron geometries in a **single draw call**.
+* **Reactive UI:** Integrated mouse-position tracking with `THREE.MathUtils.lerp` to create a "magnetic" feel, making the data cluster react naturally to user input.
 
-To learn more about Next.js, take a look at the following resources:
+### 4. Stateful Product Dashboard
+The **Dashboard** demonstrates "Product Thinking" by moving beyond static mockups.
+* **State Management:** Utilized React `useState` and `AnimatePresence` to handle seamless transitions between Overview, Analytics, and Automations.
+* **Visual Polish:** Implemented a global `.glass-panel` utility for consistent depth, blur, and lighting across the application.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🛠️ Tech Stack
 
-## Deploy on Vercel
+* **Framework:** Next.js 15 (App Router)
+* **3D Engine:** Three.js / React Three Fiber / @react-three/drei
+* **Animation:** GSAP (ScrollTrigger) & Framer Motion
+* **Styling:** Tailwind CSS (Modern `@import "tailwindcss"` syntax)
+* **Deployment:** Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📦 Local Setup
+
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/yourusername/xai-workspace.git](https://github.com/yourusername/xai-workspace.git)
+    ```
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+3.  **Run the development server:**
+    ```bash
+    npm run dev
+    ```
+4.  **Build for production:**
+    ```bash
+    npm run build
+    ```
+
+---
+
+## 🎨 Design Philosophy
+The UI follows a "Dark Intelligence" aesthetic:
+- **Typography:** Geist Sans for clarity, Geist Mono for technical data points.
+- **Color Palette:** Deep backgrounds (`#0b0d10`) contrasted with electric blue (`#4f7fff`) for call-to-actions.
+- **Atmosphere:** Heavy use of backdrop blurs and subtle borders to create layers of depth.
+
+---
+
+Created for the **RacoAI Engineering Assessment**.
