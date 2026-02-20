@@ -44,7 +44,7 @@ The **Dashboard** demonstrates "Product Thinking" by moving beyond static mockup
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/Sifat-Ikram/xai-insight-studio.git](https://github.com/Sifat-Ikram/xai-insight-studio.git)
+    https://github.com/Sifat-Ikram/xai-insight-studio.git
     ```
 2.  **Install dependencies:**
     ```bash
