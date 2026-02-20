@@ -12,87 +12,107 @@ gsap.registerPlugin(ScrollTrigger);
 function DataPoints() {
   const ref = useRef();
   const progress = useRef(0);
-  const count = 2000;
+  const count = 3000;
+  const [positions, targets] = useMemo(() => {
+    const pos = new Float32Array(count * 3);
+    const tar = new Float32Array(count * 3);
+    const size = Math.pow(count, 1 / 3);
 
-  // Chaotic positions
-  const startPositions = useMemo(() => {
-    const arr = new Float32Array(count * 3);
-    for (let i = 0; i < arr.length; i++) {
-      arr[i] = (Math.random() - 0.5) * 10;
+    for (let i = 0; i < count; i++) {
+      const i3 = i * 3;
+      const r = 5 * Math.pow(Math.random(), 1 / 3);
+      const theta = Math.random() * 2 * Math.PI;
+      const phi = Math.acos(2 * Math.random() - 1);
+      pos[i3] = r * Math.sin(phi) * Math.cos(theta);
+      pos[i3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+      pos[i3 + 2] = r * Math.cos(phi);
+      tar[i3] = ((i % size) - size / 2) * 0.8;
+      tar[i3 + 1] = ((Math.floor(i / size) % size) - size / 2) * 0.8;
+      tar[i3 + 2] = (Math.floor(i / (size * size)) - size / 2) * 0.8;
     }
-    return arr;
+    return [pos, tar];
   }, []);
 
-  // Target grid
-  const targetPositions = useMemo(() => {
-    const arr = new Float32Array(count * 3);
-    const size = Math.cbrt(count);
-    let i = 0;
-    for (let x = 0; x < size; x++) {
-      for (let y = 0; y < size; y++) {
-        for (let z = 0; z < size; z++) {
-          if (i * 3 >= arr.length) break;
-          arr[i * 3] = x - size / 2;
-          arr[i * 3 + 1] = y - size / 2;
-          arr[i * 3 + 2] = z - size / 2;
-          i++;
-        }
-      }
-    }
-    return arr;
-  }, []);
-
-  // Scroll-driven morph
   useLayoutEffect(() => {
-    ScrollTrigger.create({
-      trigger: "#hero",
-      start: "top top",
-      end: "bottom top",
-      scrub: 0.5,
-      onUpdate: (self) => (progress.current = self.progress),
+    const tl = gsap.to(progress, {
+      current: 1,
+      scrollTrigger: {
+        trigger: "#hero",
+        start: "top top",
+        end: "bottom top",
+        scrub: 1, // Increased scrub for smoother "Calm" motion
+      },
     });
+    return () => tl.kill();
   }, []);
 
-  useFrame(({ mouse, viewport }) => {
-    if (!ref.current) return;
+  useFrame((state) => {
+    const { clock, mouse } = state;
+    const time = clock.getElapsedTime();
+    const posAttr = ref.current.geometry.attributes.position;
 
-    const positions = ref.current.geometry.attributes.position.array;
-
-    // Morph + subtle wave
-    for (let i = 0; i < positions.length; i++) {
-      const target = THREE.MathUtils.lerp(
-        startPositions[i],
-        targetPositions[i],
+    for (let i = 0; i < count; i++) {
+      const i3 = i * 3;
+      // Smoothly lerp between chaotic and structured based on scroll
+      posAttr.array[i3] = THREE.MathUtils.lerp(
+        positions[i3],
+        targets[i3],
         progress.current,
       );
-
-      // subtle wave for motion
-      positions[i] = target + Math.sin(i + Date.now() * 0.001) * 0.02;
+      posAttr.array[i3 + 1] =
+        THREE.MathUtils.lerp(
+          positions[i3 + 1],
+          targets[i3 + 1],
+          progress.current,
+        ) +
+        Math.sin(time + i) * 0.01;
+      posAttr.array[i3 + 2] = THREE.MathUtils.lerp(
+        positions[i3 + 2],
+        targets[i3 + 2],
+        progress.current,
+      );
     }
+    posAttr.needsUpdate = true;
 
-    ref.current.geometry.attributes.position.needsUpdate = true;
-
-    // Subtle rotation
-    ref.current.rotation.x = mouse.y * 0.15;
-    ref.current.rotation.y = mouse.x * 0.15;
+    // Smooth Cursor Parallax (using lerp for "Weight")
+    ref.current.rotation.y = THREE.MathUtils.lerp(
+      ref.current.rotation.y,
+      mouse.x * 0.3,
+      0.05,
+    );
+    ref.current.rotation.x = THREE.MathUtils.lerp(
+      ref.current.rotation.x,
+      -mouse.y * 0.3,
+      0.05,
+    );
   });
 
   return (
-    <Points ref={ref} positions={startPositions} stride={3}>
+    <Points ref={ref} positions={positions} stride={3}>
       <PointMaterial
         transparent
-        color="#4f7fff"
-        size={0.03}
+        color="#60a5fa"
+        size={0.025}
         sizeAttenuation
         depthWrite={false}
+        blending={THREE.AdditiveBlending}
       />
     </Points>
   );
 }
 
+// DataScene.js (Export part)
 export default function DataScene() {
   return (
-    <Canvas camera={{ position: [0, 0, 8], fov: 60 }}>
+    <Canvas
+      camera={{ position: [0, 0, 8], fov: 60 }}
+      dpr={[1, 2]}
+      gl={{
+        antialias: true,
+        alpha: true,
+        powerPreference: "high-performance",
+      }}
+    >
       <ambientLight intensity={0.5} />
       <DataPoints />
     </Canvas>

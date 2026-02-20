@@ -1,16 +1,43 @@
+/* Corrected globals.css */
 @import "tailwindcss";
 
-html,
+@theme {
+  --color-bg: #0b0d10;
+  --color-muted: #a1a1aa;
+  --color-accent: #4f7fff;
+  --color-border: rgba(255, 255, 255, 0.08);
+}
+
+:root {
+  --bg: #0b0d10;
+  --muted: #a1a1aa;
+  --accent: #4f7fff;
+}
+
+html {
+  /* Enables the smooth momentum scrolling essential for GSAP ScrollTrigger */
+  scroll-behavior: initial;
+}
+
 body {
-  background: #0b0d10;
+  background-color: var(--bg);
   color: white;
+  font-feature-settings:
+    "cv02", "cv03", "cv04", "tnum"; /* Improves font rendering for data */
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-* {
-  box-sizing: border-box;
-}
-
+/* Corrected Selection for Brand Consistency */
 ::selection {
-  background: #4f7fff;
+  background: var(--accent);
   color: white;
+}
+
+/* Glassmorphism Utility - Crucial for Section 3 (Dashboard) */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
