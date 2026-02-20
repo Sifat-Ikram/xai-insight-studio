@@ -58,7 +58,6 @@ The **Dashboard** demonstrates "Product Thinking" by moving beyond static mockup
     ```bash
     npm run build
     ```
-
 ---
 
 ## 🎨 Design Philosophy
